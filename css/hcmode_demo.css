@@ -1,0 +1,83 @@
+@import url("adobe-blank.css");
+
+
+#testResultArea li {
+    margin-top: 5px;
+    padding:10px;
+    border: 1px folid 000;
+}
+
+.demoBox {
+    padding: 15px;
+    margin: 5px 0;
+    border: 1px solid black;
+}
+
+.demoBox p {
+    margin: 0;
+}
+
+#hcModeSample2 {
+    background: #FFF url(../images/valid.png) no-repeat;
+    width: 16px;
+    height: 16px;
+}
+
+.ui-helper-highcontrast bgIconWithsr-only {
+    width: auto;
+    height: auto;
+}
+
+.gradientDemo {
+    background: #c2f0fc;
+    /* Old browsers */
+    background: -moz-linear-gradient(top, #c2f0fc 0%, #ffffff 100%);
+    /* FF3.6+ */
+    background: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #c2f0fc), color-stop(100%, #ffffff));
+    /* Chrome,Safari4+ */
+    background: -webkit-linear-gradient(top, #c2f0fc 0%, #ffffff 100%);
+    /* Chrome10+,Safari5.1+ */
+    background: -o-linear-gradient(top, #c2f0fc 0%, #ffffff 100%);
+    /* Opera 11.10+ */
+    background: -ms-linear-gradient(top, #c2f0fc 0%, #ffffff 100%);
+    /* IE10+ */
+    background: linear-gradient(to bottom, #c2f0fc 0%, #ffffff 100%);
+    /* W3C */
+    filter: progid: DXImageTransform.Microsoft.gradient( startColorstr='#c2f0fc', endColorstr='#ffffff', GradientType=0);
+    /* IE6-9 */
+}
+
+.ui-helper-highcontrast .gradientDemo {
+    filter: progid: DXImageTransform.Microsoft.gradient(enabled=false);
+}
+
+.ui-helper-highcontrast .gradientDemo {
+    filter: progid: DXImageTransform.Microsoft.gradient(enabled=false);
+}
+
+.ui-helper-highcontrast #hcModeSample2 .btnIconText.sr-only {
+    position: relative !important;
+}
+
+.adobeBlank {
+    font-family: AdobeBlank;
+    font-size: 1rem;
+    display: inline-block;
+}
+.not-ie .adobeBlank{
+    display: none;
+}
+.ie8 .adobeBlank {
+    clip: rect(1px, 1px, 1px, 1px);
+    height: 0;
+    overflow: hidden;
+    position: absolute;
+    width: 0;
+}
+.ie8.ui-helper-nocustomfonts .adobeBlank {
+    clip: auto;
+    width:auto;
+    height: auto;
+    position: inherit;
+    overflow: inherit;
+}

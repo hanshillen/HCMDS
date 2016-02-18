@@ -1,0 +1,256 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Document</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
+    <link rel="stylesheet" href="css/hcmode_demo.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.0/jquery.min.js"></script>
+    <script src="js/jquery.hcmode-detection.js"></script>
+    <script>
+    // For Demo purposes only, not required for the actual HCMode Detection script 
+    $(function() {
+        var imgPath = "";
+        var imgPathFromScript = "clear.gif";
+
+        var $testResultArea = $("#testResultArea");
+        var $list;
+        $testResultArea.attr("aria-busy", "true");
+        setTimeout(function() {
+            var vars = ["images", "backgroundImages", "borderColors", "highContrastMode", "lightOnDark", "customFontFamily"];
+            $testResultArea.empty();
+            $list = $("<ul></ul>").addClass("list-unstyled").appendTo($testResultArea);
+            $.each(vars, function(i, e) {
+                var $li = $("<li></li>").addClass($.support[e] ? "bg-success" : "bg-danger").appendTo($list);
+                $li.append(e + " = <strong class='" + ($.support[e] ? "text-success" : "text-danger") + "'>" + $.support[e] + 
+                    " (" + ($.support[e] ? "enabled" : "disabled") + ")</strong>");
+            });
+            $testResultArea.removeAttr("aria-busy");
+        }, 4000);
+    });
+    </script>
+</head>
+
+<body>
+    <section class="col-md-9">
+        <h2>Introduction</h2>
+        <p>The High Contrast Mode Detection JavaScript file performs a series of tests that help determine whether or not styles defined by the website are being overwritten. In most cases when the website's styles are being overwritten, it is due to users applying a high contrast theme on the Windows operating system, utilizing their browser or a browser extension to disable images, or applying a user-defined style sheet. After the tests are performed, a collection of attributes get applied to the <code>&lt;html&gt;</code> element, allowing developers to reference them and correct any issues that are introduced.</p>
+        <div class="box-container well well-lg">
+            <h2>Demonstration</h2>
+            <p>The High Contrast Mode Detection Script is executed on page load. This demonstration will show the test results below after a short delay. Each test can then be used in reference to the samples below to see how each affects the samples as the test values change. Enabling and disabling a high contrast Windows theme as well as applying a user-defined style sheet to see these tests change. Each time a setting is changed, the page must refresh to execute the function.</p>
+            <div id="testResultArea" aria-live="polite" class="demoBox">
+                <h3>Detection Results:</h3>
+                <p>
+                    Please wait for detection results...
+                </p>
+            </div>
+            <h3>Samples</h3>
+            <p>The following samples provide test cases for common pitfalls related to author styles being overwritten.</p>
+            <h4>Sample 1</h4>
+            <p>The following sample contains a background gradient specific to Internet Explorer. The script detects that this gradient is present and removes it in order to prevent color contrast issues introduced by something changing the font color and that new color appearing on top of this gradient.</p>
+            <div class="demoBox gradientDemo">
+                <p>Text on top of gradient color</p>
+            </div>
+            <h4>Sample 2</h4>
+            <p>The following sample contains a background image with hidden text ("valid"). When a high contrast theme is detected, the background image is removed and the hidden text should become visible.</p>
+            <div class="demoBox">
+                <div id="hcModeSample2" class="bgIconWithsr-only">
+                    <span class="sr-only btnIconText">valid</span>
+                </div>
+            </div>
+            
+            <h4>Sample 3</h4>
+            <p>The example below contains 2 font glyphs. The first font glyph resembles a printer and has been placed inside of a link containing link text of "Print" that has been hidden with CSS. The second font glyph resembles a pencil and has a text description of "Pencil" that has been hidden with CSS.</p>
+            <p>When the script detects that a Windows high contrast theme or a user-defined style sheet that doesn't change the <code>font-family</code> CSS property has been applied, both font glyphs should remain visible; however, their color might change based on the link and foreground colors defined in the applied theme.</p>
+            <p>If a user-defined style sheet has been applied that does change the <code>font-family</code> CSS property, the font glyphs will disappear. Doing this will allow font glyphs to remain visible in all browsers except for Internet Explorer. Fallback text is necessary for IE and is illustrated in Sample 4 by using the Adobe Blank font.</p>
+            <div class="demoBox" style="font-size: 3em;">
+                <ul class="list-unstyled">
+                    <li>
+                        <a href="javascript:void(0);">
+                            <span class="glyphicon glyphicon-print" style="font-family :'Glyphicons Halflings' !important">
+                                <span class="sr-only"> Print</span>
+                            </span>
+                        </a>
+                    </li>
+                    <li>
+                        <span class="glyphicon glyphicon-pencil" style="font-family :'Glyphicons Halflings' !important">
+                            <span class="sr-only">Edit</span>
+                        </span>
+                    </li>
+                </ul>
+            </div>
+            <h4>Sample 4</h4>
+            <p>Below are the same font icons as in sample 3, but now the fallback text is hidden using the Adobe Blank font. The Adobe Blank font is invisible until a user changes the <code>font-family</code> controlling the text. Once a new <code>font-family</code> is used, the font becomes visible and takes on the styles given by CSS. This is only needed for IE as IE will not allow the developer to override the user-defined style sheet.</p>
+            <div class="demoBox" style="font-size: 3em;">
+                <ul class="list-unstyled" ">
+                    <li>
+                        <a href="javascript:void(0); ">
+                            <span aria-hidden="true " class="glyphicon glyphicon-print " style="font-family : 'Glyphicons Halflings' !important "></span>
+                            <span class="adobeBlank ">Print</span>
+                        </a>
+                    </li>
+                    <li>
+                        <span aria-hidden="true " class="glyphicon glyphicon-pencil " style="font-family : 'Glyphicons Halflings' !important "></span>
+                        <span class="adobeBlank ">Edit</span>
+                    </li>
+                </ul>
+            </div>
+        </div>
+        <div class="box-container well well-lg ">
+            <h2>How the Script Works</h2>
+            <p>When the page loads, a <code>&lt;div id="hcTest "&gt;</code> element and attribute are prepended to the <code>&lt;body&gt;</code> tag. As this "test " <code>&lt;div&gt;</code> is built, the function will add styles necessary to perform each test. The tests are then executed and compare the set styles against the computed styles of the browser. If the styles are different, then specific classes are added to the <code>&lt;html&gt;</code> element.</p>
+            <p>The tests which are performed are as follows:</p>
+            <ol>
+                <li><code>imageResult</code> - This tests to see if an inline HTML image tag has been changed or is not being displayed.</li>
+                <li><code>backgroundImageResult</code> - This tests if the CSS background image has been changed or is not being displayed.</li>
+                <li><code>borderColorResult</code> - This tests to see if the color of the border of the test <code>&lt;div&gt;</code> has been changed.</li>
+                <li><code>lightOnDarkResult</code> - This test compares the color of the text against the color of the background. Currently, this test uses yellow, green, white and black for text colors while using black or white for the background color.
+                    <ul>
+                        <li>If the text is lighter than the background, the script will add a class of <code>lightOnDark</code> to the <code>&lt;html&gt;</code> element.</li>
+                        <li>If the text is darker than the background, the script will add a class of <code>darkOnLight</code> to the <code>&lt;html&gt;</code> element.</li>
+                    </ul>
+                </li>
+                <li><code>sampleFontFamilyResult </code> - This test checks the <code>font-family</code> set in CSS on the <code>&lt;div&gt;</code>. If the <code>font-family</code> has changed the script will add a class of <code>ui-helper-nocustomfonts</code> to the <code>&lt;html&gt;</code> element. </li>
+                <li><code>highContrastModeResult</code> - This test checks the status of any of the previous tests. If any are true, the script will add a class of <code>ui-helper-highcontrast</code> to the <code>&lt;html&gt;</code> element. </li>
+            </ol>
+            <p>The <code>ui-helper-nocustomfonts</code> class is the only indicator that a user has applied a user-defined style sheet. The <code>ui-helper-highcontrast</code> is added to the <code>&lt;html&gt;</code> element when any of the tests show a change in styles or when images are disabled.</p>
+            <p>Each browser allows users to disable images, which disables background images in addition to HTML images and results in the <code>imageResult</code> test returning <code>false</code>. For instructions about how to disable images in a particular browser, see the <a href="#testingSection " target="_self " title="jump link to show testing procedures for each browser " class="jumpLink ">Testing Procedure for Each Browser</a> section.</p>
+        </div>
+        <div class="box-container well well-lg ">
+            <h2>About High Contrast Themes</h2>
+            <p>High contrast themes are available on the Windows operating system and serve as an accessibility feature for low vision users. When these themes are applied, background colors and font colors are changed in order to create a higher color contrast, making text and borders easier to see. These changes are also inherited for web content in Internet Explorer and Firefox. Opera and Chrome do not inherit high contrast themes; however, both have browser extensions available that allow users to change the theme.</p>
+        </div>
+        <div class="box-container well well-lg ">
+            <h2>About User-Defined Style Sheets</h2>
+            <p>All browsers allow users to load their own style sheets, either through a browser setting or through browser extensions that the user can install. These style sheets can be used to override a web page's CSS styles defined by the website. This way, users can enhance the appearance of a web page to better fit their needs. Examples of modifications that user-defined style sheet are likely to contain are:</p>
+            <ul>
+                <li>Increased font sizes</li>
+                <li>Changes to the <code>font-family</code> (e.g., to a sans-serif font that is easier for the user to read).</li>
+                <li>Changes in color (e.g., background colors and foreground colors to improve color contrast).</li>
+                <li>Changes to the page layout, allowing all page content to be viewed as one big column that fits the viewport.</li>
+                <li>Removal of background images to ensure proper color contrast for text.</li>
+            </ul>
+            <p>Such user styles will often be defined with the <code>!important</code> keyword to ensure that they will be guaranteed to override author defined styles, regardless of how high the specificity of those style declarations are. If a user style uses the <code>!important</code> keyword, there is no way for a web author to override it. If the keyword is not used, it's possible for web authors to still override the styles through the use of <code>!important</code>.</p>
+            <p><span class="label label-info ">Note:</span> It's up to the user (or to the tools installed by the user) to determine what styles a user style sheet contains. The user styles will be different from person to person, depending on what works best for them. Because of this, it is not possible for a web developer to predict what kind of styles a user might load, or whether they will use the <code>!important</code> keyword.</p>
+            <h3>Common Issues with User-Defined Style Sheets</h3>
+            <p>There is good chance that a user style sheet contains styles that modify background and foreground colors to increase contrast or remove background images. In that respect, the issues that can be expected are similar to issues that can be expected when a high contrast theme is applied. This means that the High Contrast Mode Detection script can also be used to determine whether or not a custom style sheet is active and is overriding background and foreground colors.</p>
+            <p>Additionally, a common issue occurs when a web page uses font based icons (i.e. icons that are actually text characters in a custom font set). Such font icons only work if the correct <code>font-family</code> is set. If a user-defined style sheet were to override <code>font-family</code> for all elements using the <code>!important</code> keyword, then font based icons would break.</p>
+            <p><span class="label label-info ">Note:</span> The <code>!important</code> declaration is a way to have the rules you feel are most crucial always be applied. <code>!important</code> declarations should be reserved for special needs and users who want to make web content more accessible by overriding default user agent or website stylesheets. In short, code CSS properly and avoid using <code>!important</code> wherever possible.</p>
+        </div>
+        <div class="box-container well well-lg ">
+            <h2>Enabling High Contrast Themes</h2>
+            <h3 class="before-list "> In Windows XP </h3>
+            <ol>
+                <li>In Control Panel, make sure you are in Classic View, with all Control Panel icons showing. If not, click Switch to Classic View in the left pane of Control Panel.</li>
+                <li>Click Accessibility Options to open the Accessibility Options dialog box. Click the Display tab and select the Use High Contrast check box.</li>
+                <li>Click Settings to open the Settings for High Contrast dialog box. Select the check boxes for the options you want.</li>
+                <li>Click OK, click OK again, and then click the Close button.</li>
+            </ol>
+            <h3> In Windows 7 </h3>
+            <ol>
+                <li>Right click on the desktop, select "Personalize " from the context menu.</li>
+                <li>Under "Basic and High Contrast Themes ", select one of the available high contrast themes</li>
+            </ol>
+            <p><span class="label label-info ">Note:</span> It is also possible to turn a high contrast theme on or off using the
+                <kbd>
+                    <kbd>Left Alt</kbd> +
+                    <kbd>Left Shift</kbd> +
+                    <kbd>Print Screen</kbd>
+                </kbd> keyboard shortcut.</p>
+        </div>
+        <div class="box-container well well-lg ">
+            <h2 id="testingSection " tabindex="-1 ">Testing Procedure for Each Browser</h2>
+            <h3>Safari OSX:</h3>
+            <p><span class="label label-info ">Notes:</span></p>
+            <ul>
+                <li>OSX does not have native high contrast themes like Windows; however, it does have an option to invert the color scheme or apply a grayscale color filter. These options do not introduce the issues that Windows does (e.g., removing background images) when they are applied.</li>
+                <li>Disabling images also disables background images.</li>
+                <li><span class="label label-important ">ISSUE:</span> Background images are removed when images are disabled, but the script does not report background images as being off (i.e., background images are still exposed as a CSS <code>&lt;style&gt;</code> property).</li>
+                <li>After turning images off, a reload without cache (
+                    <kbd>
+                        <kbd>Cmd</kbd> +
+                        <kbd>Shift</kbd> +
+                        <kbd>R</kbd>
+                    </kbd>) is required for the background images to visually disappear.</li>
+            </ul>
+            <h4>Testing Procedure</h4>
+            <ul>
+                <li>Develop (enable this menu in Settings &gt; Advanced) &gt; Disable Images</li>
+            </ul>
+            <h3>IE 8+:</h3>
+            <p><span class="label label-info ">Notes:</span></p>
+            <ul>
+                <li>Disabling images also disables background images, (although some versions of IE don't seem to do this).</li>
+                <li>Data URIs (needed for accurate images-off detection) are only supported in 8 and higher, which is why image detection in this script does not work in older versions of IE.</li>
+            </ul>
+            <h4>Testing Procedure</h4>
+            <ul>
+                <li>Tools &gt; Internet Options &gt; Advanced &gt; Multimedia &gt; uncheck "Show Pictures "</li>
+                <li>Turn on a Windows high contrast theme (instructions are located in the Enabling High Contrast Themes section on this page).</li>
+            </ul>
+            <h3>Chrome Windows:</h3>
+            <p><span class="label label-info ">Notes:</span></p>
+            <ul>
+                <li>Disabling images also disables background images.</li>
+                <li>Windows high contrast themes are not inherited by Chrome; however, Google offers a browser extension called High Contrast that can be installed and used to apply a color filter on top of the page. Due to the way the extension works, it is not detectable by this script and will not create the problems created by Windows high contrast themes.</li>
+            </ul>
+            <h4>Testing Procedure</h4>
+            <ul>
+                <li>Settings &gt; 'show advanced settings' link at the bottom &gt; Privacy 'Content Settings' button &gt; Images: Do not show any images</li>
+            </ul>
+            <h3>Firefox Windows:</h3>
+            <p><span class="label label-info ">Notes:</span></p>
+            <ul>
+                <li>Disabling images also disables background images.</li>
+                <li>Background images using a Data URI source are not removed when images are disabled (and are therefore not used when the script runs in Firefox).</li>
+            </ul>
+            <h4>Testing Procedure</h4>
+            <ul>
+                <li>Tools &gt; Options&nbsp; &gt; Content &gt; uncheck Load Images Automatically</li>
+                <li>Turn on a Windows high contrast theme (instructions on how to do this are located in the Enabling High Contrast Themes section on this page).</li>
+            </ul>
+            <h3>Opera Windows:</h3>
+            <p><span class="label label-info ">Notes:</span></p>
+            <ul>
+                <li>Script correctly detects removed background images in browser based accessibility and high contrast themes.</li>
+                <li>Border colors not overridden in browser based High Contrast Theme (browser issue, not script issue).</li>
+                <li>Disabling images also disables background images.</li>
+                <li><span class="label label-important ">ISSUE:</span> Background images are removed when images are disabled, but script does not report background images as being off (background images are still exposed as style property).</li>
+            </ul>
+            <h4>Testing Procedure</h4>
+            <ul>
+                <li>Settings &gt; Websites &gt; Images &gt; Do not show any images</li>
+            </ul>
+            <h4>General Notes:</h4>
+            <ul>
+                <!-- <li>Note: Data URIs can't always be relied on because Firefox does not remove these images when images are enabled. In addition, in other browsers there would be no way to distinguish between the browser not supporting data URIs or the browser having removed images. Because of this, Firefox uses a different method for detecting whether images are disabled, and image detection only works on IE8 and up (using a method that works in IE7 is not accurate enough).</li> -->
+                <li>All browsers will hide background images when disabling images in the browser. Only Chrome and Firefox correctly expose <code>backgroundImageResult</code> as <code>false</code> in this case, the others incorrectly expose <code>true</code> here. For this reason, <code>highContrastModeResult</code> is <code>true</code> when either <code>imageResult</code>, <code>backgroundImageResult</code>, or <code>borderColorResult</code> is <code>false</code>.</li>
+            </ul>
+        </div>
+        <div class="box-container well well-lg ">
+            <h2>Problems Caused by High Contrast Themes</h2>
+            <p>When a high contrast theme is enabled, the following changes are applied to the styles on a web page for browsers that inherit high contrast themes:</p>
+            <ul>
+                <li>Foreground colors (text, borders) will be overridden to the high contrast foreground color (e.g., yellow)</li>
+                <li>Background colors will be overridden to the high contrast background color (e.g., black)</li>
+                <li>Background images will be removed</li>
+            </ul>
+            <p>These changes can cause the following issues:</p>
+            <ul>
+                <li>Any information that relied on CSS background styles will no longer be visible so, for example:
+                    <ul>
+                        <li>Icon buttons with CSS background images become unusable since the icon will disappear.</li>
+                        <li>CSS background colors used to indicate selection or focus will no longer be visible.</li>
+                        <li>CSS background colors used to create a "fill " (e.g., a progress bar that slowly fills up using a background color) will become invisible.</li>
+                    </ul>
+                </li>
+                <li>If a container that overlaps other content (such as drop down menus, dialogs, etc.) did not originally have a background color set, it may become transparent.</li>
+                <li>Any information that depended on color (background or foreground) is likely to become invisible. For example, if red and green border colors are used to make a distinction between elements, those elements will all have the same border color in a Windows high contrast theme.</li>
+                <li>When an element is styled with the IE specific <code>filter</code> property to create a gradient background, this gradient is not removed or modified. Since the background color does not change and the foreground does, this may result in text being difficult or impossible to read.</li>
+            </ul>
+        </div>
+    </section>
+</body>
+
+</html>
