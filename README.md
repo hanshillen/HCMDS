@@ -7,10 +7,7 @@ The High Contrast Mode Detection JavaScript file performs a series of tests that
 
 ## Demonstration
 
-The High Contrast Mode Detection Script is executed on page load. The [Demo page](http://hanshillen.github.io/HCMDS/hcmode_detection.html)
-
-
-demo page shows the detection results below after a short delay. Each test can then be used in reference to the samples below to see how each affects the samples as the test values change. Enabling and disabling a high contrast Windows theme as well as applying a user-defined style sheet to see these tests change. Each time a setting is changed, the page must refresh to execute the function.
+The High Contrast Mode Detection Script is executed on page load. The [Demo page](http://hanshillen.github.io/HCMDS/hcmode_detection.html) shows the detection results below after a short delay. Each test can then be used in reference to the samples below to see how each affects the samples as the test values change. Enabling and disabling a high contrast Windows theme as well as applying a user-defined style sheet to see these tests change. Each time a setting is changed, the page must refresh to execute the function.
 
 *   imageResult = true (<span class="enabled">enabled</span>)
 *   backgroundImageResult = true (<span class="enabled">enabled</span>)
